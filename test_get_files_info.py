@@ -1,0 +1,17 @@
+from functions.get_files_info import get_files_info
+
+print("===TEST 1===")
+print(get_files_info("calculator", "."))
+print()
+
+print("===TEST 2===")
+print(get_files_info("calculator", "/bin"))
+print()
+
+print("===TEST 3===")
+print(get_files_info("calcualtor", "../"))
+print()
+
+print("===TEST 4===")
+print(get_files_info("calcualtor", "main.py"))
+print()
