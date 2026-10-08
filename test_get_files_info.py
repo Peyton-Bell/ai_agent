@@ -5,13 +5,13 @@ print(get_files_info("calculator", "."))
 print()
 
 print("===TEST 2===")
-print(get_files_info("calculator", "/bin"))
+print(get_files_info("calculator", "pkg"))
 print()
 
 print("===TEST 3===")
-print(get_files_info("calcualtor", "../"))
+print(get_files_info("calculator", "/bin"))
 print()
 
 print("===TEST 4===")
-print(get_files_info("calcualtor", "main.py"))
+print(get_files_info("calculator", "../"))
 print()

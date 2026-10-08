@@ -16,16 +16,18 @@ def get_files_info(working_directory: str, directory: str = ".") -> str:
             return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
 
         # guardrails for LLM so it doesn't go outside of working directory
-        elif not os.path.isdir(directory):
+        elif not os.path.isdir(target_dir):
             return f'Error: "{directory}" is not a directory'
 
-        # return success message if the directory is good to use
-        else:
-            return f'Success: "{directory}" is within the working directory'
+
+        # Now after it's all validated we can list out the file info here
+        file_info_list = []
+        for item in os.listdir(target_dir):
+            item_path = os.path.join(target_dir, item)
+            file_info_list.append(f"- {item}: file_size={os.path.getsize(item_path)} bytes, is_dir={os.path.isdir(item_path)}")
+        return "\n".join(file_info_list)
 
     # if any other errors occur catch them here
     except Exception as e:
-        print(f"Error: {e}")
+        return f"Error: {e}"
 
-
-get_files_info("calculator")
