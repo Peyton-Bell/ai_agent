@@ -26,7 +26,12 @@ def main():
         ]
     )
 
-    print(response.choices[0].message.content)
+    # print token metadata
+    print(f"Prompt tokens: {response.usage.prompt_tokens}")
+    print(f"Response tokens: {response.usage.completion_tokens}")
+
+    # print response from model
+    print(f"Response: {response.choices[0].message.content}")
 
 
 if __name__ == "__main__":
