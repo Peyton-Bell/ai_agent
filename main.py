@@ -8,6 +8,7 @@ def main():
     # setup for parser
     parser = argparse.ArgumentParser(description="Chatbot")
     parser.add_argument("user_prompt", type=str, help="User Prompt")
+    parser.add_argument("--verbose", action="store_true", help="Enable Verbose Output")
     args = parser.parse_args()
 
     # setup api key for openrouter
@@ -23,21 +24,23 @@ def main():
         api_key=api_key,
     )
 
-    # Hardcoding response
+    # Response from model
+    messages=[{"role": "user", "content": args.user_prompt}]
     response = client.chat.completions.create(
         model = "openrouter/free",
-        messages = [
-            {
-                "role": "user",
-                "content": args.user_prompt,
-            }
-        ]
+        messages = messages
     )
+
+
+    # print user prompt
+    if args.verbose:
+        print(f"User prompt: {args.user_prompt}")
 
     # print token metadata
     if response.usage is not None:
-        print(f"Prompt tokens: {response.usage.prompt_tokens}")
-        print(f"Response tokens: {response.usage.completion_tokens}")
+        if args.verbose:
+            print(f"Prompt tokens: {response.usage.prompt_tokens}")
+            print(f"Response tokens: {response.usage.completion_tokens}")
     else:
         print("Token usage not available because response.usage = None")
 
