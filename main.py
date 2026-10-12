@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 import argparse
+from prompt import system_prompt
 
 def main():
 
@@ -25,16 +26,20 @@ def main():
     )
 
     # Response from model
-    messages=[{"role": "user", "content": args.user_prompt}]
+    messages=[
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": args.user_prompt}
+        ]
     response = client.chat.completions.create(
         model = "openrouter/free",
         messages = messages
     )
 
 
-    # print user prompt
+    # print user prompt adn which model is used
     if args.verbose:
         print(f"User prompt: {args.user_prompt}")
+        print(f"Model used: {response.model}")
 
     # print token metadata
     if response.usage is not None:
