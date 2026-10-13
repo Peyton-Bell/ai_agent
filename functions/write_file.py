@@ -33,4 +33,26 @@ def write_file(working_directory: str, file_path: str, content: str) -> str:
     except Exception as e:
          return f"Error: {e}"
 
+# JSON schem for write_file
 
+schema_write_file = {
+    "type": "function",
+    "function": {
+        "name": "write_file",
+        "description": "Writes content into a file that is inside the working directory. It will create a new file if needed and any dirs that should lead to it. The function also replaces any content inside returning a success message if no errors occur. It will return any errors if something fails.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "A file_path relative to the working directory that shows the path to the file we want to write into",
+                },
+                "content": {
+                    "type": "string",
+                    "description": "A string of content we want to write into the file we find using the file_path"
+                },
+            },
+        "required": ["file_path", "content"],
+        }
+    }
+}

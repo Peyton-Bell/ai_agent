@@ -66,3 +66,31 @@ def run_python_file(
         
     except Exception as e:
         return f"Error: executing Python file: {e}"
+
+# JSON schema for run_python_file function
+
+schema_run_python_file = {
+    "type": "function",
+    "function": {
+        "name": "run_python_file",
+        "description": "Runs a python file in the working directory and returns its output (stdout and stderr) along with the exit code if it fails.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "A file path relative to working directory that shows where to find the python file",
+                },
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description":
+                    "An optional list of command line arguments to add to the python file. An example would be something like [3 + 5]",
+                }
+            },
+            "required": ["file_path"],
+        }
+    }
+}

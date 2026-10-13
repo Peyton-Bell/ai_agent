@@ -38,4 +38,23 @@ def get_file_content(working_directory: str, file_path: str) -> str:
         return f"Error: {e}"
 
 
+# JSON schema for get_file_content
+schema_get_file_content = {
+    "type": "function",
+    "function": {
+        "name": "get_file_content",
+        "description": "Open and reads a given file returning up to 10,000 characters. It will also return any errors if somethign fails.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "A file path relative to working directory that shows where to find the file", 
+                },
+            "required": ["file_path"],
+            }
+        }
+    }
+}
+
         

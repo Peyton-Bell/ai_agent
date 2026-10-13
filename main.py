@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import argparse
 from prompt import system_prompt
+from available_functions import available_function
+import json
 
 def main():
 
@@ -32,7 +34,8 @@ def main():
         ]
     response = client.chat.completions.create(
         model = "openrouter/free",
-        messages = messages
+        messages = messages,
+        tools=available_function,
     )
 
 
@@ -50,7 +53,13 @@ def main():
         print("Token usage not available because response.usage = None")
 
     # print response from model
-    print(f"Response: {response.choices[0].message.content}")
+    message = response.choices[0].message
+    if message.tool_calls:
+        for tool_call in message.tool_calls:
+            function_args = json.loads(tool_call.function.arguments or "{}")
+            print(f"Calling function: {tool_call.function.name}({function_args})")
+    
+    print(message.content)
 
 
 if __name__ == "__main__":
