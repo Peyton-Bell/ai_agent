@@ -50,9 +50,9 @@ schema_get_file_content = {
                 "file_path": {
                     "type": "string",
                     "description": "A file path relative to working directory that shows where to find the file", 
-                },
+                }
+            },
             "required": ["file_path"],
-            }
         }
     }
 }
