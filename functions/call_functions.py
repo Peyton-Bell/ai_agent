@@ -1,0 +1,46 @@
+import json
+from collections.abc import Callable
+from functions.get_file_content import get_file_content
+from functions.write_file import write_file
+from functions.run_python_file import run_python_file
+from functions.get_files_info import get_files_info
+
+def call_function(tool_call, verbose: bool=False) -> dict:
+
+    # defines the function name and function arguments
+    function_name = tool_call.function.name
+    function_args = json.loads(tool_call.function.arguments or "{}")
+
+    # function map for valid functions
+    function_map: dict[str, Callable[..., str]] = {
+        "get_file_content": get_file_content,
+        "run_python_file": run_python_file,
+        "write_file": write_file,
+        "get_files_info": get_files_info,
+    }
+
+    # if verbose is True print out the name and args otherwise just the name
+    if verbose:
+        print(f" - Calling function: {function_name}({function_args})")
+    else:
+        print(f" - Calling function: {function_name}")
+
+    # return error if function name not in function map
+    if function_name not in function_map:
+        return {
+            "role": "tool",
+            "tool_call_id": tool_call.id,
+            "content": f"Error: Unknown function: {function_name}"
+        }
+
+    # set working dictionary to ./calculator
+    function_args["working_directory"] = "./calculator"
+
+    # Now we call the function
+    result = function_map[function_name](**function_args)
+
+    return{
+        "role": "tool",
+        "tool_call_id": tool_call.id,
+        "content": result,
+    }

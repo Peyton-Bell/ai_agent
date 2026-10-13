@@ -4,7 +4,7 @@ from openai import OpenAI
 import argparse
 from prompt import system_prompt
 from available_functions import available_function
-import json
+from functions.call_functions import call_function
 
 def main():
 
@@ -56,10 +56,20 @@ def main():
     message = response.choices[0].message
     if message.tool_calls:
         for tool_call in message.tool_calls:
-            function_args = json.loads(tool_call.function.arguments or "{}")
-            print(f"Calling function: {tool_call.function.name}({function_args})")
-    
-    print(message.content)
+
+            # call the function
+            result_message = call_function(tool_call, args.verbose)
+
+            # raise exception if content is empty
+            if not result_message["content"]:
+                raise Exception("Content is empty")
+
+            # in verbose mode print the verbose output
+            if args.verbose:
+                print(f"-> {result_message['content']}")
+  
+    else:
+        print(message.content)
 
 
 if __name__ == "__main__":
